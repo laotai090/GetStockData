@@ -2,15 +2,15 @@ name: Daily Tech Stock Briefing
 
 on:
   schedule:
-    # GitHub Actions 运行在 UTC 时间。
-    # 示例 1: 美股开盘前（美东夏令时 08:30 AM = UTC 12:30），周一至周五执行：
+    # 美股开盘前（美东夏令时 08:30 AM = UTC 12:30），周一至周五执行：
     - cron: '30 12 * * 1-5'
-    
-    # 示例 2: 如果希望在亚洲早晨（北京时间 07:30 AM = UTC 23:30 前一天）收到：
-    # - cron: '30 23 * * 0-4'
 
   # 允许在 GitHub 网页上手动点击立即运行，方便调试
   workflow_dispatch:
+
+  # 赋予工作流向仓库推送代码的权限
+permissions:
+  contents: write
 
 jobs:
   run-daily-briefing:
@@ -37,3 +37,11 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: |
           python tech_stock_daily.py
+
+      - name: 自动提交并更新 README.md
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "docs: 自动更新每日科技股晨报 [skip ci]" || exit 0
+          git push
