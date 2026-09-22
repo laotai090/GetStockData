@@ -74,32 +74,33 @@ def generate_briefing() -> str:
     
     return response.text
 
-# ----------------- 4. 推送渠道支持（以飞书 Webhook 为例） -----------------
+# ----------------- 4. Discord 专属 Webhook 推送 -----------------
 def send_to_webhook(content: str):
     if not WEBHOOK_URL:
         print("未检测到 WEBHOOK_URL，跳过推送步骤。")
         return
 
-    # 飞书机器人消息格式（其他平台如钉钉、企业微信仅需调整 payload 字段）
+    # Discord Embed 格式：排版整洁、支持 Markdown，且单条最大支持 4096 字符
     payload = {
-        "msg_type": "interactive",
-        "card": {
-            "header": {
-                "title": {"tag": "plain_text", "content": "📊 每日科技股核心动态速递"},
-                "template": "blue"
-            },
-            "elements": [
-                {"tag": "markdown", "content": content}
-            ]
-        }
+        "username": "科技股资讯助手",
+        "avatar_url": "https://img.icons8.com/color/512/bullish.png",
+        "embeds": [
+            {
+                "title": "📊 每日美股科技板块核心晨报",
+                "description": content[:4000],  # 截断防止超出 Discord 4096 限制
+                "color": 3447003,  # 卡片左侧装饰条颜色（科技蓝）
+            }
+        ]
     }
     
     try:
         res = requests.post(WEBHOOK_URL, json=payload, timeout=10)
         res.raise_for_status()
-        print("消息推送成功！")
+        print("Discord 消息推送成功！")
     except Exception as e:
-        print(f"消息推送失败: {e}", file=sys.stderr)
+        print(f"Discord 消息推送失败: {e}", file=sys.stderr)
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Discord 接口返回详细信息: {e.response.text}", file=sys.stderr)
 
 # ----------------- 5. 写入 GitHub Actions 页面摘要 (Summary) -----------------
 def write_github_summary(content: str):
