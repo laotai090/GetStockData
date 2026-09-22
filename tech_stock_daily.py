@@ -113,7 +113,25 @@ def write_github_summary(content: str):
     else:
         print("本地运行环境，未检测到 GITHUB_STEP_SUMMARY 变量。")
 
-# ----------------- 6. 主执行入口 -----------------
+# ----------------- 6. 写入仓库首页 README.md (新加进去) -----------------
+def update_readme(content: str):
+    readme_template = f"""# 📈 每日美股科技板块核心研报
+
+> 🤖 本页面由 Google Gemini + GitHub Actions 每天在美股开盘前自动检索、分析并更新。
+
+{content}
+
+---
+*免责声明：以上内容由 AI 自动搜集公开市场资讯生成，仅供技术研究与信息参考，不构成任何投资建议。*
+"""
+    try:
+        with open("README.md", "w", encoding="utf-8") as f:
+            f.write(readme_template)
+        print("已成功写入 README.md 文件！")
+    except Exception as e:
+        print(f"写入 README.md 失败: {e}", file=sys.stderr)
+        
+# ----------------- 7. 主执行入口 -----------------
 if __name__ == "__main__":
     # 1. 生成科技股简报
     report = generate_briefing()
@@ -126,5 +144,8 @@ if __name__ == "__main__":
     # 3. 写入 GitHub 网页端摘要（只要在 Actions 中跑就会自动渲染）
     write_github_summary(report)
     
-    # 4. 如果配置了 Webhook，推送到手机/聊天软件
+    # 4. 覆盖更新仓库首页 README
+    update_readme(report)
+    
+    # 5. 如果配置了 Webhook，推送到手机/聊天软件
     send_to_webhook(report)
