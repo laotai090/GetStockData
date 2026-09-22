@@ -20,7 +20,7 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 # 限制范围：仅追踪核心巨头与半导体链条，防止漫无目的地检索全网海量小盘股
-TICKER_SCOPE = "NVDA, MSFT, AAPL, GOOGL, AMZN, META, TSLA, TSM, ASML"
+TICKER_SCOPE = "NVDA, MSFT, AAPL, GOOGL, AMZN, META, TSLA, ASML, AVGO"
 
 prompt = f"""
 你是一名资深美股量化宏观与科技板块研究员。
