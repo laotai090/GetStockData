@@ -101,16 +101,31 @@ def send_to_webhook(content: str):
     except Exception as e:
         print(f"消息推送失败: {e}", file=sys.stderr)
 
-# ----------------- 5. 主执行入口 -----------------
+# ----------------- 5. 写入 GitHub Actions 页面摘要 (Summary) -----------------
+def write_github_summary(content: str):
+    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        try:
+            with open(summary_path, "a", encoding="utf-8") as f:
+                f.write(content + "\n")
+            print("已成功写入 GitHub Actions Summary 摘要看板！")
+        except Exception as e:
+            print(f"写入 GitHub Summary 失败: {e}", file=sys.stderr)
+    else:
+        print("本地运行环境，未检测到 GITHUB_STEP_SUMMARY 变量。")
+
+# ----------------- 6. 主执行入口 -----------------
 if __name__ == "__main__":
+    # 1. 生成科技股简报
     report = generate_briefing()
+    
+    # 2. 控制台打印预览
     print("----- 生成内容预览 -----")
     print(report)
     print("------------------------")
     
-    send_to_webhook(report)
+    # 3. 写入 GitHub 网页端摘要（只要在 Actions 中跑就会自动渲染）
+    write_github_summary(report)
     
-    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
-    if summary_path:
-        with open(summary_path, "a", encoding="utf-8") as f:
-            f.write(report)
+    # 4. 如果配置了 Webhook，推送到手机/聊天软件
+    send_to_webhook(report)
