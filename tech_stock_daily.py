@@ -109,3 +109,8 @@ if __name__ == "__main__":
     print("------------------------")
     
     send_to_webhook(report)
+    
+    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        with open(summary_path, "a", encoding="utf-8") as f:
+            f.write(report)
