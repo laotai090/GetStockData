@@ -84,7 +84,7 @@ def send_to_webhook(content: str):
     payload = {
         "embeds": [
             {
-                "title": "❤️ 早安",
+                "title": "❤️ Hello",
                 "description": content[:4000],  # 截断防止超出 Discord 4096 限制
                 "color": 1710618,  # 卡片左侧装饰条颜色（黑金）
             }
