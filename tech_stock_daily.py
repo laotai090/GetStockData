@@ -50,7 +50,7 @@ def generate_briefing() -> str:
     
     # 使用 2.5-flash 实现极致的成本与速度平衡
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             # 开启 Google Search Grounding 实时联网
