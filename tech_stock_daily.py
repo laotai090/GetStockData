@@ -82,13 +82,11 @@ def send_to_webhook(content: str):
 
     # Discord Embed 格式：排版整洁、支持 Markdown，且单条最大支持 4096 字符
     payload = {
-        "username": "科技股资讯助手",
-        "avatar_url": "https://img.icons8.com/color/512/bullish.png",
         "embeds": [
             {
-                "title": "📊 每日美股科技板块核心晨报",
+                "title": "❤️ 早安",
                 "description": content[:4000],  # 截断防止超出 Discord 4096 限制
-                "color": 3447003,  # 卡片左侧装饰条颜色（科技蓝）
+                "color": 1710618,  # 卡片左侧装饰条颜色（黑金）
             }
         ]
     }
