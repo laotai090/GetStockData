@@ -7,7 +7,7 @@ from google.genai import types
 
 # ----------------- 1. 配置与环境检查 -----------------
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-# 可选：飞书/企业微信/钉钉/Discord 等 Webhook 地址
+
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 if not GEMINI_API_KEY:
