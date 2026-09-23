@@ -2,8 +2,7 @@ name: Daily Tech Stock Briefing
 
 on:
   schedule:
-    # 美股开盘前（美东夏令时 08:30 AM = UTC 12:30），周一至周五执行：
-    - cron: '30 12 * * 1-5'
+    - cron: '43 11 * * 1-5'
 
   # 允许在 GitHub 网页上手动点击立即运行，方便调试
   workflow_dispatch:
