@@ -5,7 +5,7 @@ on:
     - cron: '43 11 * * 1-5'
 
   # 允许在 GitHub 网页上手动点击立即运行，方便调试
-  workflow_dispatch:
+ # workflow_dispatch:
 
   # 赋予工作流向仓库推送代码的权限
 permissions:
